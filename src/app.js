@@ -38,14 +38,13 @@ app.post('/login', (req, res) => {
 	const { email, password } = req.body;
 
 	if (!email || !password) {
-		return res.status(200).json({
+		return res.status(400).json({
 			error: 'email and password are required'
 		});
 	}
-git status
-	return res.status(500).json({
-		message: 'login failed',
-		token: null
+
+	return res.status(401).json({
+		error: 'invalid credentials'
 	});
 });
 
