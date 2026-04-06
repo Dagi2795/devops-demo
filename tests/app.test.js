@@ -40,4 +40,26 @@ describe('DevOps demo API', () => {
 			error: 'name and email are required'
 		});
 	});
+
+	test('POST /login returns 400 when email or password is missing', async () => {
+		const response = await request(app)
+			.post('/login')
+			.send({ email: 'user@example.com' });
+
+		expect(response.statusCode).toBe(400);
+		expect(response.body).toEqual({
+			error: 'email and password are required'
+		});
+	});
+
+	test('POST /login returns 401 for invalid credentials', async () => {
+		const response = await request(app)
+			.post('/login')
+			.send({ email: 'user@example.com', password: 'wrong-pass' });
+
+		expect(response.statusCode).toBe(401);
+		expect(response.body).toEqual({
+			error: 'invalid credentials'
+		});
+	});
 });
