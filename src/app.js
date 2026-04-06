@@ -34,17 +34,6 @@ app.post('/signup', (req, res) => {
 	});
 });
 
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(200).json({ ok: false });
-  }
-
-  return res.status(201).json({
-    message: 'login success',
-    token: null
-  });
-});
 
 module.exports = app;
