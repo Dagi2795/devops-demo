@@ -14,4 +14,30 @@ describe('DevOps demo API', () => {
 		expect(response.body.course).toBe('SEng5304');
 		expect(response.body.topic).toContain('DevOps');
 	});
+
+	test('POST /signup returns created user when data is valid', async () => {
+		const response = await request(app)
+			.post('/signup')
+			.send({ name: 'Dagi', email: 'dagi@example.com' });
+
+		expect(response.statusCode).toBe(201);
+		expect(response.body).toEqual({
+			message: 'signup successful',
+			user: {
+				name: 'Dagi',
+				email: 'dagi@example.com'
+			}
+		});
+	});
+
+	test('POST /signup returns 400 when name or email is missing', async () => {
+		const response = await request(app)
+			.post('/signup')
+			.send({ name: 'Dagi' });
+
+		expect(response.statusCode).toBe(400);
+		expect(response.body).toEqual({
+			error: 'name and email are required'
+		});
+	});
 });

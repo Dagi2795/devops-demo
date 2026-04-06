@@ -4,7 +4,7 @@ This is a small project for a classroom demo of DevOps basics.
 
 ## What this demo includes
 
-- A tiny Node.js API (`/health` and `/message`)
+- A tiny Node.js API (`/health`, `/message`, and `/signup`)
 - Automated tests with Jest
 - Docker container build
 - CI workflow using GitHub Actions
@@ -23,6 +23,27 @@ Test endpoints:
 
 - `GET /health`
 - `GET /message`
+- `POST /signup`
+
+Example signup request:
+
+```bash
+curl -X POST http://localhost:3000/signup \
+	-H "Content-Type: application/json" \
+	-d "{\"name\":\"Dagi\",\"email\":\"dagi@example.com\"}"
+```
+
+Expected response:
+
+```json
+{
+	"message": "signup successful",
+	"user": {
+		"name": "Dagi",
+		"email": "dagi@example.com"
+	}
+}
+```
 
 ## Docker run
 
