@@ -1,0 +1,25 @@
+{
+	"name": "devops-demo",
+	"version": "1.0.0",
+	"description": "Simple DevOps demo: Node API + tests + Docker + CI",
+	"main": "src/server.js",
+	"scripts": {
+		"start": "node src/server.js",
+		"test": "jest --coverage",
+		"test:ci": "jest --ci --coverage --runInBand"
+	},
+	"keywords": [
+		"devops",
+		"demo",
+		"ci-cd"
+	],
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"express": "^4.19.2"
+	},
+	"devDependencies": {
+		"jest": "^29.7.0",
+		"supertest": "^7.0.0"
+	}
+}
