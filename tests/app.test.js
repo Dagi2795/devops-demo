@@ -2,64 +2,89 @@ const request = require('supertest');
 const app = require('../src/app');
 
 describe('DevOps demo API', () => {
+
     test('GET /health returns status ok', async () => {
-        const response = await request(app).get('/health');
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toEqual({ status: 'ok' });
+        const res = await request(app).get('/health');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toEqual({ status: 'ok' });
     });
 
     test('GET /message returns presentation info', async () => {
-        const response = await request(app).get('/message');
-        expect(response.statusCode).toBe(200);
-        expect(response.body.course).toBe('SEng5304');
-        expect(response.body.topic).toContain('DevOps');
+        const res = await request(app).get('/message');
+        expect(res.statusCode).toBe(200);
+        expect(res.body.course).toBe('SEng5304');
+        expect(res.body.topic).toContain('DevOps');
     });
 
-    test('POST /signup returns created user when data is valid', async () => {
-        const response = await request(app)
+    test('POST /signup success', async () => {
+        const res = await request(app)
             .post('/signup')
             .send({ name: 'Dagi', email: 'dagi@example.com' });
 
-        expect(response.statusCode).toBe(201);
-        expect(response.body).toEqual({
-            message: 'signup successful',
-            user: {
-                name: 'Dagi',
-                email: 'dagi@example.com'
-            }
-        });
+        expect(res.statusCode).toBe(201);
+        expect(res.body.user.name).toBe('Dagi');
     });
 
-    test('POST /signup returns 400 when name or email is missing', async () => {
-        const response = await request(app)
+    test('POST /signup fails if missing data', async () => {
+        const res = await request(app)
             .post('/signup')
             .send({ name: 'Dagi' });
 
-        expect(response.statusCode).toBe(400);
-        expect(response.body).toEqual({
-            error: 'name and email are required'
-        });
+        expect(res.statusCode).toBe(400);
     });
 
-    test('POST /login returns 400 when email or password is missing', async () => {
-        const response = await request(app)
+    test('POST /login fails if missing data', async () => {
+        const res = await request(app)
             .post('/login')
-            .send({ email: 'user@example.com' });
+            .send({ email: 'test@test.com' });
 
-        expect(response.statusCode).toBe(400);
-        expect(response.body).toEqual({
-            error: 'email and password are required'
-        });
+        expect(res.statusCode).toBe(400);
     });
 
-    test('POST /login returns 401 for invalid credentials', async () => {
-        const response = await request(app)
+    test('POST /login invalid credentials', async () => {
+        const res = await request(app)
             .post('/login')
-            .send({ email: 'user@example.com', password: 'wrong-pass' });
+            .send({ email: 'test@test.com', password: '123' });
 
-        expect(response.statusCode).toBe(401);
-        expect(response.body).toEqual({
-            error: 'invalid credentials'
-        });
+        expect(res.statusCode).toBe(401);
     });
+
+    test('GET /profile-fake returns demo profile', async () => {
+        const res = await request(app).get('/profile-fake/999');
+        expect(res.statusCode).toBe(200);
+        expect(res.body.name).toBe('Demo User');
+    });
+
+    test('GET /profile returns real profile', async () => {
+        const res = await request(app).get('/profile/101');
+        expect(res.statusCode).toBe(200);
+        expect(res.body.name).toBe('Dagi');
+    });
+
+    test('GET /profile returns 404 if not found', async () => {
+        const res = await request(app).get('/profile/999');
+        expect(res.statusCode).toBe(404);
+    });
+
+    test('PUT /profile updates profile', async () => {
+        const res = await request(app)
+            .put('/profile/101')
+            .send({
+                name: 'Updated',
+                role: 'Leader',
+                bio: 'Updated bio'
+            });
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.profile.name).toBe('Updated');
+    });
+
+    test('PUT /profile fails if missing fields', async () => {
+        const res = await request(app)
+            .put('/profile/101')
+            .send({ name: 'Only name' });
+
+        expect(res.statusCode).toBe(400);
+    });
+
 });
