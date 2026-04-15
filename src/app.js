@@ -34,6 +34,14 @@ app.get('/message', (req, res) => {
   });
 });
 
+// Demo update route
+app.get('/demo-update', (req, res) => {
+  res.status(200).json({
+    message: 'demo updated and ready',
+    routes: ['/health', '/message', '/signup', '/login', '/profile/:id']
+  });
+});
+
 // Signup
 app.post('/signup', (req, res) => {
   const { name, email } = req.body;

@@ -23,6 +23,7 @@ Test endpoints:
 
 - `GET /health`
 - `GET /message`
+- `GET /demo-update`
 - `POST /signup`
 
 Example signup request:

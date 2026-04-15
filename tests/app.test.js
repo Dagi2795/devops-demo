@@ -16,6 +16,16 @@ describe('DevOps demo API', () => {
         expect(res.body.topic).toContain('DevOps');
     });
 
+    test('GET /demo-update returns updated demo status', async () => {
+        const res = await request(app).get('/demo-update');
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toEqual({
+            message: 'demo updated and ready',
+            routes: ['/health', '/message', '/signup', '/login', '/profile/:id']
+        });
+    });
+
     test('POST /signup success', async () => {
         const res = await request(app)
             .post('/signup')
