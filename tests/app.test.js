@@ -22,7 +22,18 @@ describe('DevOps demo API', () => {
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual({
             message: 'demo updated and ready',
-            routes: ['/health', '/message', '/signup', '/login', '/profile/:id']
+            routes: ['/health', '/message', '/signup', '/login', '/profile/:id', '/about']
+        });
+    });
+
+    test('GET /about returns app summary', async () => {
+        const res = await request(app).get('/about');
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toEqual({
+            app: 'DevOps Demo',
+            purpose: 'Show CI/CD, testing, and profile management',
+            status: 'ready for presentation'
         });
     });
 

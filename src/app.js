@@ -38,7 +38,16 @@ app.get('/message', (req, res) => {
 app.get('/demo-update', (req, res) => {
   res.status(200).json({
     message: 'demo updated and ready',
-    routes: ['/health', '/message', '/signup', '/login', '/profile/:id']
+    routes: ['/health', '/message', '/signup', '/login', '/profile/:id', '/about']
+  });
+});
+
+// About route
+app.get('/about', (req, res) => {
+  res.status(200).json({
+    app: 'DevOps Demo',
+    purpose: 'Show CI/CD, testing, and profile management',
+    status: 'ready for presentation'
   });
 });
 
